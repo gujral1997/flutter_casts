@@ -13,7 +13,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
 
     catController = AnimationController(
-      duration: Duration(seconds: 2),
+      duration: Duration(milliseconds: 700),
       vsync: this,
     );
     catAnimation = Tween(begin: 0.0, end: 100.0).animate(CurvedAnimation(
@@ -23,7 +23,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   onTap() {
-    catController.forward();
+    if (catController.status == AnimationStatus.completed) {
+      catController.reverse();
+    } else if (catController.status == AnimationStatus.dismissed) {
+      catController.forward();
+    }
   }
 
   Widget build(BuildContext context) {
