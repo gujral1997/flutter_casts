@@ -1,4 +1,4 @@
-package com.example.flutter_cast;
+package com.example.animation;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
