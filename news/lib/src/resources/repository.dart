@@ -4,10 +4,20 @@ import 'news_db_provider.dart';
 import '../models/item_model.dart';
 
 class Repository {
-  NewsApiProvider dbProvider = NewsApiProvider();
+  NewsDbProvider dbProvider = NewsDbProvider();
   NewsApiProvider apiProvider = NewsApiProvider();
 
   fetTopIds() {
     return apiProvider.fetchTopIds();
+  }
+
+  fetchItem(int id) async {
+    var item = await dbProvider.fetchItem(id);
+    if (item != null) {
+      return item;
+    }
+    item = await apiProvider.fetchItem(id);
+    await dbProvider.fetchItem(id);
+    return item;
   }
 }
