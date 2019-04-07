@@ -33,10 +33,18 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       vsync: this,
     );
 
-    catAnimation = Tween(begin: -35.0, end: -83.0).animate(CurvedAnimation(
-      parent: catController,
-      curve: Curves.easeIn,
-    ));
+    catAnimation = Tween(begin: -35.0, end: -83.0).animate(
+      CurvedAnimation(
+        parent: catController,
+        curve: Curves.easeIn,
+      ),
+    );
+    boxController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        boxController.repeat();
+      }
+    });
+    boxController.forward();
   }
 
   onTap() {
