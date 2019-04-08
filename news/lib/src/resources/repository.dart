@@ -18,8 +18,15 @@ class Repository {
     }
 
     item = await apiProvider.fetchItem(id);
-    await dbProvider.fetchItem(id);
+    dbProvider.addItem(item);
 
     return item;
   }
 }
+
+abstract class Source {
+  Future<List<int>> fetchTopIds();
+  Future<ItemModel> fetchItem(int id);
+}
+
+abstract class Cache {}
