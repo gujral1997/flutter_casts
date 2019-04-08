@@ -6,8 +6,12 @@ import 'dart:async';
 import '../models/item_model.dart';
 import 'repository.dart';
 
-class NewsDbProvider implements Source {
+class NewsDbProvider implements Source, Cache {
   Database db;
+
+  NewsDbProvider() {
+    init();
+  }
 
   // Todo - store and fetch top ids
   Future<List<int>> fetchTopIds() {
@@ -59,3 +63,5 @@ class NewsDbProvider implements Source {
     return db.insert("Items", item.toMapForDb());
   }
 }
+
+final newsDbProvider = NewsDbProvider();
