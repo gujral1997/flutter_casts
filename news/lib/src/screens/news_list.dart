@@ -34,11 +34,4 @@ class NewsList extends StatelessWidget {
       },
     );
   }
-
-  getFuture() {
-    return Future.delayed(
-      Duration(seconds: 2),
-      () => 'hi',
-    );
-  }
 }

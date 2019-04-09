@@ -18,29 +18,30 @@ class NewsDbProvider implements Source, Cache {
     return null;
   }
 
-  init() async {
+  void init() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, "items.db");
+    final path = join(documentsDirectory.path, "items4.db");
     db = await openDatabase(
       path,
       version: 1,
       onCreate: (Database newDb, int version) {
         newDb.execute("""
-        CREATE TABLE Items(
-          id INTEGER PRIMARY KEY,
-          type TEXT,
-          by TEXT,
-          time INTEGER,
-          text TEXT,
-          parent INTEGER,
-          kids BLOB,
-          dead INTEGER,
-          deletes INTEGER,
-          url TEXT,
-          score INTEGER,
-          title TEXT,
-          descendants INTEGER
-        )
+          CREATE TABLE Items
+            (
+              id INTEGER PRIMARY KEY,
+              type TEXT,
+              by TEXT,
+              time INTEGER,
+              text TEXT,
+              parent INTEGER,
+              kids BLOB,
+              dead INTEGER,
+              deleted INTEGER,
+              url TEXT,
+              score INTEGER,
+              title TEXT,
+              descendants INTEGER
+            )
         """);
       },
     );
@@ -53,14 +54,24 @@ class NewsDbProvider implements Source, Cache {
       where: "id = ?",
       whereArgs: [id],
     );
+
     if (maps.length > 0) {
       return ItemModel.fromDb(maps.first);
     }
+
     return null;
   }
 
   Future<int> addItem(ItemModel item) {
-    return db.insert("Items", item.toMapForDb());
+    return db.insert(
+      "Items",
+      item.toMapForDb(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+  }
+
+  Future<int> clear() {
+    return db.delete("Items");
   }
 }
 
